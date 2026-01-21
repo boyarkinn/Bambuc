@@ -10,6 +10,11 @@ type ChatMessage = {
   content: string
 }
 
+const createId = () =>
+  typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`
+
 function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
@@ -39,7 +44,7 @@ function Chat() {
 
     setError(null)
     const userMessage: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: createId(),
       role: 'user',
       content: input.trim(),
     }
@@ -72,7 +77,7 @@ function Chat() {
         'Нет ответа от модели'
 
       const assistantMessage: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: createId(),
         role: 'assistant',
         content,
       }
