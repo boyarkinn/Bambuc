@@ -1,0 +1,53 @@
+/* Базовая кнопка */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Маленький размер кнопки */
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+/* Основная кнопка */
+.btn-primary {
+  background: #5b6bff;
+  color: #fff;
+  border: none;
+}
+
+/* Кнопка с обводкой */
+.btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #f4f6ff;
+}
+
+/* Кнопка-карточка */
+.btn-card {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #eef1ff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Ховер для кнопки-карточки */
+.btn-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}

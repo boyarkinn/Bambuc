@@ -1,0 +1,8 @@
+/* Общие стили: раскладка */
+@import './layout.css';
+/* Общие стили: типографика */
+@import './typography.css';
+/* Общие стили: кнопки */
+@import './buttons.css';
+/* Общие стили: фоны */
+@import './backgrounds.css';

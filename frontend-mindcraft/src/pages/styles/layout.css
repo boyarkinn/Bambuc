@@ -1,0 +1,16 @@
+/* Базовая обертка страницы */
+.page {
+  min-height: 100vh;
+}
+
+/* Темная тема для страницы */
+.page--dark {
+  background: #0c0f17;
+  color: #f4f6ff;
+}
+
+/* Ограничение ширины контента */
+.page__section {
+  margin: 0 auto;
+  max-width: 1200px;
+}

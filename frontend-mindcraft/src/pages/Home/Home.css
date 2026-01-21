@@ -1,0 +1,95 @@
+/* Контейнер главной страницы */
+.home {
+  min-height: 100vh;
+  padding: 32px 80px 64px;
+}
+
+/* Шапка главной страницы */
+.home__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 64px;
+}
+
+/* Логотип */
+.home__logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Первый экран */
+.home__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 72px;
+}
+
+/* Текст в первом экране */
+.home__hero-text p {
+  max-width: 520px;
+  margin: 0 0 28px;
+}
+
+/* Карточка с метриками */
+.home__hero-card {
+  background: rgba(15, 19, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Заголовок карточки */
+.home__card-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(238, 241, 255, 0.6);
+  margin-bottom: 20px;
+}
+
+/* Контент карточки */
+.home__card-body {
+  display: grid;
+  gap: 16px;
+}
+
+/* Строка метрики */
+.home__metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: rgba(238, 241, 255, 0.8);
+}
+
+/* Значение метрики */
+.home__metric strong {
+  font-size: 18px;
+  color: #ffffff;
+}
+
+/* Блок кнопок-направлений */
+.home__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+
+/* Адаптив для планшетов и мобильных */
+@media (max-width: 960px) {
+  /* Уменьшенные отступы */
+  .home {
+    padding: 28px 24px 48px;
+  }
+
+  /* Одна колонка в герое */
+  .home__hero {
+    grid-template-columns: 1fr;
+  }
+}

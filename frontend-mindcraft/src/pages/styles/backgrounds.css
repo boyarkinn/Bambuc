@@ -1,0 +1,11 @@
+/* Фон главной страницы */
+.bg-home {
+  background: radial-gradient(circle at top, #1a2140 0%, #0b0f1a 55%, #070a12 100%);
+  color: #eef1ff;
+}
+
+/* Темный фон для внутренних страниц */
+.bg-dark {
+  background: #0c0f17;
+  color: #f4f6ff;
+}
