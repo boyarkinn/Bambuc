@@ -23,6 +23,13 @@
   justify-self: end;
 }
 
+/* Статус подключения/ответа */
+.chat__status {
+  justify-self: end;
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.6);
+}
+
 /* Заголовок чата */
 .chat__title {
   font-weight: 600;
@@ -39,6 +46,12 @@
   overflow-y: auto;
 }
 
+/* Пустое состояние */
+.chat__empty {
+  color: rgba(244, 246, 255, 0.6);
+  font-size: 14px;
+}
+
 /* Сообщение в чате */
 .chat__message {
   display: flex;
@@ -49,6 +62,11 @@
 /* Сообщение пользователя */
 .chat__message--user {
   justify-content: flex-end;
+}
+
+/* Сообщение ассистента */
+.chat__message--assistant {
+  justify-content: flex-start;
 }
 
 /* Аватар бота */
@@ -75,6 +93,12 @@
 /* Пузырь пользователя */
 .chat__message--user .chat__bubble {
   background: #5b6bff;
+}
+
+/* Ошибка запроса */
+.chat__error {
+  color: #ff9c9c;
+  font-size: 13px;
 }
 
 /* Нижняя панель ввода */
@@ -109,11 +133,6 @@
   .chat__header {
     grid-template-columns: 1fr;
     justify-items: start;
-  }
-
-  /* Кнопка справа переносится вниз */
-  .chat__new {
-    justify-self: start;
   }
 
   /* Суженные отступы */

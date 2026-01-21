@@ -1,6 +1,7 @@
 import express, { type Request, type Response, type NextFunction } from 'express'
 import axios from 'axios'
 import { cocoonClient } from './cocoonClient.js'
+import { config } from './config.js'
 
 export const cocoonRouter = express.Router()
 
@@ -19,7 +20,16 @@ cocoonRouter.get('/v1/models', async (_req: Request, res: Response, next: NextFu
 
 cocoonRouter.post('/v1/chat/completions', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await cocoonClient.chatCompletions(req.body ?? {})
+    const payload = { ...(req.body ?? {}) } as Record<string, unknown>
+    if (!payload.model && config.cocoonChatModel) {
+      payload.model = config.cocoonChatModel
+    }
+    const messages = payload.messages
+    if (!Array.isArray(messages) || messages.length === 0) {
+      res.status(400).json({ error: 'messages is required' })
+      return
+    }
+    const data = await cocoonClient.chatCompletions(payload)
     res.json(data)
   } catch (error) {
     next(error)
