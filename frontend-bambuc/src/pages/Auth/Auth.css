@@ -81,6 +81,12 @@
   color: rgba(244, 246, 255, 0.45);
 }
 
+/* Ошибка */
+.auth__error {
+  font-size: 13px;
+  color: #ff9a9a;
+}
+
 /* Кнопка формы */
 .auth__submit {
   margin-top: 6px;
