@@ -99,7 +99,7 @@ function Chat() {
     <main className="chat bg-dark">
       <header className="chat__header">
         <Link className="link-muted" to="/">← На главную</Link>
-        <div className="chat__title">MindCraft Chat</div>
+        <div className="chat__title">BAMBUC Chat</div>
         <div className="chat__status">{isSending ? 'Модель отвечает…' : 'Готово'}</div>
       </header>
 

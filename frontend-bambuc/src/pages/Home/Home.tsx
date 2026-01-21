@@ -5,7 +5,7 @@ function Home() {
   return (
     <main className="home bg-home">
       <header className="home__header">
-        <div className="home__logo">MindCraft</div>
+        <div className="home__logo">BAMBUC</div>
       </header>
 
       <section className="home__hero">
@@ -17,7 +17,7 @@ function Home() {
           </p>
         </div>
         <div className="home__hero-card">
-          <div className="home__card-title">MindCraft Console</div>
+          <div className="home__card-title">BAMBUC Console</div>
           <div className="home__card-body">
             <div className="home__metric">
               <span>Генераций</span>
