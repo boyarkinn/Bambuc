@@ -19,6 +19,11 @@
   letter-spacing: 0.5px;
 }
 
+/* Кнопка входа */
+.home__login {
+  letter-spacing: 0.8px;
+}
+
 /* Первый экран */
 .home__hero {
   display: grid;

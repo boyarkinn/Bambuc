@@ -6,6 +6,9 @@ function Home() {
     <main className="home bg-home">
       <header className="home__header">
         <div className="home__logo">BAMBUC</div>
+        <Link className="btn btn-outline btn-sm home__login" to="/login">
+          ВОЙТИ
+        </Link>
       </header>
 
       <section className="home__hero">
