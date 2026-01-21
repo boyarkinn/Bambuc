@@ -1,0 +1,123 @@
+/* Боковая панель */
+.chat__sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: rgba(8, 10, 18, 0.9);
+}
+
+/* Верх сайдбара */
+.chat__sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Логотип в сайдбаре */
+.chat__brand {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Метка бренда */
+.chat__brand-mark {
+  width: 100%;
+  padding: 6px 14px;
+  min-height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  background: rgba(91, 107, 255, 0.2);
+  color: #9aa7ff;
+  border: 1px solid rgba(91, 107, 255, 0.4);
+}
+
+/* Иконка назад */
+.chat__back-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(244, 246, 255, 0.75);
+  font-size: 14px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.chat__back-icon:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Иконка стрелки */
+.chat__back-icon-svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Кнопка нового чата */
+.chat__new-chat {
+  width: 100%;
+  min-height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(244, 246, 255, 0.75);
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+
+.chat__new-chat:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Секция списка */
+.chat__section {
+  display: grid;
+  gap: 10px;
+}
+
+/* Заголовок секции */
+.chat__section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(244, 246, 255, 0.5);
+}
+
+/* Список чатов */
+.chat__list {
+  display: grid;
+  gap: 8px;
+}
+
+/* Элемент списка чатов */
+.chat__list-item {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f6ff;
+  cursor: pointer;
+}
+
+/* Ховер списка чатов */
+.chat__list-item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}

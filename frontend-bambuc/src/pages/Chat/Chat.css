@@ -1,14 +1,26 @@
 /* Контейнер страницы чата */
 .chat {
   min-height: 100vh;
+}
+
+/* Сетка страницы чата */
+.chat__layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* Основная колонка чата */
+.chat__main {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Верхняя панель чата */
 .chat__header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   padding: 20px 32px;
@@ -17,10 +29,6 @@
   position: sticky;
   top: 0;
   z-index: 10;
-}
-
-.chat__header > :last-child {
-  justify-self: end;
 }
 
 /* Статус подключения/ответа */
@@ -129,15 +137,20 @@
 
 /* Адаптив для мобильных */
 @media (max-width: 720px) {
-  /* Шапка в одну колонку */
-  .chat__header {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
-
   /* Суженные отступы */
   .chat__window,
   .chat__composer {
     padding: 20px;
+  }
+}
+
+@media (max-width: 960px) {
+  /* Сайдбар скрывается на мобильных */
+  .chat__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chat__sidebar {
+    display: none;
   }
 }

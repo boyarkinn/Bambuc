@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import './Chat.css'
+import ChatSidebar from './ChatSidebar'
 
 type ChatRole = 'user' | 'assistant'
 
@@ -97,53 +97,57 @@ function Chat() {
 
   return (
     <main className="chat bg-dark">
-      <header className="chat__header">
-        <Link className="link-muted" to="/">← На главную</Link>
-        <div className="chat__title">BAMBUC Chat</div>
-        <div className="chat__status">{isSending ? 'Модель отвечает…' : 'Готово'}</div>
-      </header>
+      <div className="chat__layout">
+        <ChatSidebar />
 
-      <section className="chat__window">
-        {messages.length === 0 && !isSending && (
-          <div className="chat__empty">
-            Напишите запрос, чтобы начать диалог.
-          </div>
-        )}
+        <section className="chat__main">
+          <header className="chat__header">
+            <div className="chat__title">Chat</div>
+          </header>
 
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`chat__message chat__message--${message.role}`}
-          >
-            {message.role === 'assistant' && <div className="chat__avatar">MC</div>}
-            <div className="chat__bubble">{message.content}</div>
-          </div>
-        ))}
+          <section className="chat__window">
+            {messages.length === 0 && !isSending && (
+              <div className="chat__empty">
+                Напишите запрос, чтобы начать диалог.
+              </div>
+            )}
 
-        {isSending && (
-          <div className="chat__message chat__message--assistant">
-            <div className="chat__avatar">MC</div>
-            <div className="chat__bubble">...</div>
-          </div>
-        )}
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`chat__message chat__message--${message.role}`}
+              >
+                {message.role === 'assistant' && <div className="chat__avatar">MC</div>}
+                <div className="chat__bubble">{message.content}</div>
+              </div>
+            ))}
 
-        {error && <div className="chat__error">{error}</div>}
-        <div ref={endRef} />
-      </section>
+            {isSending && (
+              <div className="chat__message chat__message--assistant">
+                <div className="chat__avatar">MC</div>
+                <div className="chat__bubble">...</div>
+              </div>
+            )}
 
-      <form className="chat__composer" onSubmit={onSubmit}>
-        <input
-          className="chat__input"
-          type="text"
-          placeholder="Напиши запрос..."
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          disabled={isSending}
-        />
-        <button className="btn btn-primary" type="submit" disabled={!canSend}>
-          Отправить
-        </button>
-      </form>
+            {error && <div className="chat__error">{error}</div>}
+            <div ref={endRef} />
+          </section>
+
+          <form className="chat__composer" onSubmit={onSubmit}>
+            <input
+              className="chat__input"
+              type="text"
+              placeholder="Напиши запрос..."
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              disabled={isSending}
+            />
+            <button className="btn btn-primary" type="submit" disabled={!canSend}>
+              Отправить
+            </button>
+          </form>
+        </section>
+      </div>
     </main>
   )
 }
