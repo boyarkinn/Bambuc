@@ -73,12 +73,45 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(9, 12, 20, 0.8);
   color: #f4f6ff;
-  padding: 10px 12px;
+  padding: 10px 44px 10px 12px;
   font-size: 14px;
 }
 
 .auth__input::placeholder {
   color: rgba(244, 246, 255, 0.45);
+}
+
+/* Обертка поля с иконкой */
+.auth__input-wrap {
+  position: relative;
+  display: grid;
+}
+
+/* Кнопка показать пароль */
+.auth__toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(244, 246, 255, 0.7);
+  cursor: pointer;
+}
+
+.auth__toggle:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.auth__toggle-icon {
+  width: 16px;
+  height: 16px;
 }
 
 /* Ошибка */

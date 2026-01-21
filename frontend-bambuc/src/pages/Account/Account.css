@@ -1,0 +1,202 @@
+/* Обертка страницы аккаунта */
+.account {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+}
+
+/* Карточка аккаунта */
+.account__card {
+  width: min(420px, 100%);
+  padding: 28px;
+  border-radius: 18px;
+  background: rgba(15, 19, 35, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 18px;
+}
+
+/* Шапка */
+.account__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+/* Кнопка назад */
+.account__back {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(244, 246, 255, 0.75);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.account__back:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.account__back-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Заголовок */
+.account__title {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Информация */
+.account__info {
+  display: grid;
+  gap: 12px;
+}
+
+.account__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.75);
+}
+
+.account__value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account__value-text {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f4f6ff;
+  font-weight: 600;
+}
+
+/* Форма смены пароля */
+.account__form {
+  display: grid;
+  gap: 12px;
+}
+
+.account__section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(244, 246, 255, 0.55);
+}
+
+.account__input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(9, 12, 20, 0.8);
+  color: #f4f6ff;
+  padding: 10px 44px 10px 12px;
+  font-size: 14px;
+}
+
+.account__input--compact {
+  padding: 8px 10px;
+}
+
+.account__input-wrap {
+  position: relative;
+  display: grid;
+}
+
+.account__toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(244, 246, 255, 0.7);
+  cursor: pointer;
+}
+
+.account__toggle:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.account__toggle-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.account__field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account__icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(244, 246, 255, 0.7);
+  cursor: pointer;
+}
+
+.account__icon-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.account__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.account__input::placeholder {
+  color: rgba(244, 246, 255, 0.45);
+}
+
+.account__error {
+  font-size: 13px;
+  color: #ff9a9a;
+}
+
+.account__success {
+  font-size: 13px;
+  color: #9ef0a0;
+}
+
+.account__submit {
+  width: 100%;
+}
+
+/* Кнопка выхода */
+.account__logout {
+  width: 100%;
+}

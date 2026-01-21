@@ -7,6 +7,7 @@ function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -39,7 +40,7 @@ function Register() {
         localStorage.setItem('auth_user', JSON.stringify(data.user))
       }
 
-      navigate('/chat')
+      navigate('/')
     } catch (err) {
       console.error('[auth.register] failed', err)
       setError('Не удалось подключиться к серверу')
@@ -86,14 +87,36 @@ function Register() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <input
-            className="auth__input"
-            type="password"
-            placeholder="Пароль"
-            autoComplete="new-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+          <div className="auth__input-wrap">
+            <input
+              className="auth__input"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Пароль"
+              autoComplete="new-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <button
+              className="auth__toggle"
+              type="button"
+              aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <svg
+                className="auth__toggle-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
           {error && <div className="auth__error">{error}</div>}
           <button className="btn btn-primary auth__submit" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Отправка...' : 'Зарегистрироваться'}

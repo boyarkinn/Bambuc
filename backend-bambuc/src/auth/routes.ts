@@ -73,4 +73,78 @@ router.post('/login', async (req, res) => {
   }
 })
 
+router.post('/change-password', async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body ?? {}
+
+    if (!email || !currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'email, currentPassword, newPassword are required' })
+    }
+
+    const normalizedEmail = String(email).toLowerCase().trim()
+    const user = await User.findOne({ email: normalizedEmail })
+    if (!user) {
+      return res.status(404).json({ error: 'user not found' })
+    }
+
+    const valid = await bcrypt.compare(String(currentPassword), user.passwordHash)
+    if (!valid) {
+      return res.status(401).json({ error: 'invalid credentials' })
+    }
+
+    user.passwordHash = await bcrypt.hash(String(newPassword), 10)
+    await user.save()
+
+    return res.json({ ok: true })
+  } catch (error) {
+    console.error('[auth.change-password] error', error)
+    return res.status(500).json({ error: 'internal server error' })
+  }
+})
+
+router.post('/update-profile', async (req, res) => {
+  try {
+    const { email, newEmail, name } = req.body ?? {}
+
+    if (!email) {
+      return res.status(400).json({ error: 'email is required' })
+    }
+
+    const normalizedEmail = String(email).toLowerCase().trim()
+    const user = await User.findOne({ email: normalizedEmail })
+    if (!user) {
+      return res.status(404).json({ error: 'user not found' })
+    }
+
+    if (newEmail) {
+      const normalizedNewEmail = String(newEmail).toLowerCase().trim()
+      if (normalizedNewEmail !== normalizedEmail) {
+        const existing = await User.findOne({ email: normalizedNewEmail }).lean()
+        if (existing) {
+          return res.status(409).json({ error: 'email already in use' })
+        }
+        user.email = normalizedNewEmail
+      }
+    }
+
+    if (typeof name === 'string') {
+      const trimmedName = name.trim()
+      if (trimmedName) {
+        user.name = trimmedName
+      } else {
+        user.set('name', undefined, { strict: false })
+      }
+    }
+
+    await user.save()
+
+    return res.json({
+      user: { id: user.id, email: user.email, name: user.name, role: user.role }
+    })
+  } catch (error) {
+    console.error('[auth.update-profile] error', error)
+    return res.status(500).json({ error: 'internal server error' })
+  }
+})
+
 export const authRouter = router

@@ -1,14 +1,28 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import './Home.css'
 
 function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const hasToken = Boolean(localStorage.getItem('auth_token'))
+    setIsAuthenticated(hasToken)
+  }, [])
+
   return (
     <main className="home bg-home">
       <header className="home__header">
         <div className="home__logo">BAMBUC</div>
-        <Link className="btn btn-outline btn-sm home__login" to="/login">
-          ВОЙТИ
-        </Link>
+        {isAuthenticated ? (
+          <Link className="btn btn-outline btn-sm home__login" to="/account">
+            Аккаунт
+          </Link>
+        ) : (
+          <Link className="btn btn-outline btn-sm home__login" to="/login">
+            ВОЙТИ
+          </Link>
+        )}
       </header>
 
       <section className="home__hero">
