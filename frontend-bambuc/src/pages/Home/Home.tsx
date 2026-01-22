@@ -56,9 +56,9 @@ function Home() {
         <Link className="btn btn-card" to="/images">
           Изображения
         </Link>
-        <button className="btn btn-card" type="button">
+        <Link className="btn btn-card" to="/videos">
           Видео
-        </button>
+        </Link>
         <button className="btn btn-card" type="button">
           Чат-боты
         </button>
