@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { connectDb } from './db/index.js'
 import { authRouter } from './auth/routes.js'
+import { imagesRouter } from './images/routes.js'
 
 dotenv.config()
 
@@ -15,6 +16,7 @@ app.get('/health', (_req, res) => {
 })
 
 app.use('/auth', authRouter)
+app.use('/v1', imagesRouter)
 
 const port = process.env.APP_PORT ? Number(process.env.APP_PORT) : 5051
 
