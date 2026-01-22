@@ -4,7 +4,11 @@ import './ChatSidebar.css'
 
 const chats: { id: string; title: string }[] = []
 
-function ChatSidebar() {
+type ChatSidebarProps = {
+  showNewChat?: boolean
+}
+
+function ChatSidebar({ showNewChat = true }: ChatSidebarProps) {
   return (
     <aside className="chat__sidebar">
       <div className="chat__sidebar-top">
@@ -27,9 +31,11 @@ function ChatSidebar() {
         </div>
       </div>
 
-      <button className="chat__new-chat" type="button">
-        Новый чат
-      </button>
+      {showNewChat && (
+        <button className="chat__new-chat" type="button">
+          Новый чат
+        </button>
+      )}
 
       {chats.length > 0 && (
         <div className="chat__section">

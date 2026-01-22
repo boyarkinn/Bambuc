@@ -53,9 +53,9 @@ function Home() {
       </section>
 
       <section className="home__features">
-        <button className="btn btn-card" type="button">
+        <Link className="btn btn-card" to="/images">
           Изображения
-        </button>
+        </Link>
         <button className="btn btn-card" type="button">
           Видео
         </button>
