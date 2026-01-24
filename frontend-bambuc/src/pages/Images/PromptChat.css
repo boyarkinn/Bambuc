@@ -1,0 +1,17 @@
+.images__prompt {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.images__prompt-window {
+  gap: 14px;
+}
+
+.images__prompt-input {
+  resize: none;
+  min-height: 58px;
+}
+
+.images__prompt-composer {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}

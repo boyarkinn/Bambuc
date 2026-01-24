@@ -1,3 +1,7 @@
+.images__layout {
+  grid-template-columns: 280px 1fr 1fr;
+}
+
 .images__window {
   align-items: flex-start;
   justify-content: flex-end;
@@ -146,4 +150,15 @@
   background: rgba(12, 15, 23, 0.95);
   color: rgba(244, 246, 255, 0.85);
   font-size: 15px;
+}
+
+@media (max-width: 960px) {
+  .images__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .images__prompt {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }

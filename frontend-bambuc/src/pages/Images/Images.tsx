@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import ChatSidebar from '../Chat/ChatSidebar'
 import ImageCard from './ImageCard'
+import PromptChat from './PromptChat'
 import UploadedImagesCard from './UploadedImagesCard'
 import '../Chat/Chat.css'
 import './Images.css'
@@ -145,8 +146,9 @@ function Images() {
         void addFiles(files.slice(0, 3))
       }}
     >
-      <div className="chat__layout">
+      <div className="chat__layout images__layout">
         <ChatSidebar showNewChat />
+        <PromptChat />
 
         <section className="chat__main">
           <header className="chat__header">
