@@ -1,11 +1,29 @@
 /* Боковая панель */
 .chat__sidebar {
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   background: rgba(8, 10, 18, 0.9);
+  width: 280px;
+  transition: width 0.2s ease;
+}
+
+.chat__sidebar--collapsed {
+  width: 72px;
+}
+
+.chat__sidebar-toggle {
+  margin-left: auto;
+}
+
+.chat__sidebar-toggle-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.chat__sidebar--collapsed .chat__sidebar-toggle-icon {
+  transform: rotate(180deg);
 }
 
 /* Верх сайдбара */
@@ -14,7 +32,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
-  padding-bottom: 16px;
+  padding: 12px 18px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -49,6 +67,7 @@
   display: grid;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
   color: rgba(244, 246, 255, 0.75);
   font-size: 14px;
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -70,8 +89,10 @@
   width: 100%;
   min-height: 36px;
   border-radius: 10px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: transparent;
   color: rgba(244, 246, 255, 0.75);
@@ -84,6 +105,36 @@
 .chat__new-chat:hover {
   border-color: rgba(255, 255, 255, 0.25);
   background: rgba(255, 255, 255, 0.05);
+}
+
+.chat__new-chat-icon {
+  display: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* Заголовок боковой панели в стиле чата */
+.chat__sidebar-header {
+  position: static;
+  top: auto;
+  z-index: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  background: rgba(8, 10, 18, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chat__sidebar-header .chat__title {
+  flex: 1;
+}
+
+.chat__sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 18px;
 }
 
 /* Секция списка */
@@ -115,9 +166,73 @@
   background: rgba(255, 255, 255, 0.04);
   color: #f4f6ff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat__list-item-icon {
+  display: none;
+  width: 16px;
+  height: 16px;
 }
 
 /* Ховер списка чатов */
 .chat__list-item:hover {
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chat__sidebar--collapsed .chat__sidebar-top {
+  padding: 12px 10px 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat__sidebar--collapsed .chat__brand-mark {
+  font-size: 0;
+}
+
+.chat__sidebar--collapsed .chat__brand-mark::after {
+  content: "B";
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.chat__sidebar--collapsed .chat__sidebar-header {
+  justify-content: center;
+}
+
+.chat__sidebar--collapsed .chat__sidebar-header .chat__title {
+  display: none;
+}
+
+.chat__sidebar--collapsed .chat__sidebar-content {
+  padding: 16px 10px;
+  gap: 16px;
+}
+
+.chat__sidebar--collapsed .chat__new-chat-icon {
+  display: grid;
+}
+
+.chat__sidebar--collapsed .chat__new-chat-label {
+  display: none;
+}
+
+.chat__sidebar--collapsed .chat__section-title {
+  display: none;
+}
+
+.chat__sidebar--collapsed .chat__list-item-icon {
+  display: grid;
+}
+
+.chat__sidebar--collapsed .chat__list-item-label {
+  display: none;
+}
+
+.chat__sidebar--collapsed .chat__list-item {
+  justify-content: center;
+  padding: 10px;
 }

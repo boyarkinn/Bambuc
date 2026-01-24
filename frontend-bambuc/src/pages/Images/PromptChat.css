@@ -2,6 +2,35 @@
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.images__prompt-toggle {
+  margin-left: auto;
+}
+
+.images__prompt-toggle-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.images__prompt--collapsed .images__prompt-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.images__prompt--collapsed .chat__header {
+  justify-content: center;
+}
+
+.images__prompt .chat__header {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.images__prompt--collapsed .chat__title,
+.images__prompt--collapsed .chat__window,
+.images__prompt--collapsed .chat__composer {
+  display: none;
+}
+
 .images__prompt-window {
   gap: 14px;
 }

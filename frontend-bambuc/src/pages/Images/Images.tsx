@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import ChatSidebar from '../Chat/ChatSidebar'
 import ImageCard from './ImageCard'
 import PromptChat from './PromptChat'
@@ -28,6 +29,9 @@ function Images() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
   const [isDragActive, setIsDragActive] = useState(false)
+  const [isPromptCollapsed, setIsPromptCollapsed] = useState(false)
+  const [isMobileLayout, setIsMobileLayout] = useState(false)
+  const [activeMobilePanel, setActiveMobilePanel] = useState<'sidebar' | 'prompt' | 'generation'>('generation')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const dragCounterRef = useRef(0)
 
@@ -112,6 +116,51 @@ function Images() {
     }
   }
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+    const media = window.matchMedia('(max-width: 960px)')
+    const update = () => setIsMobileLayout(media.matches)
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
+
+  const isPromptCollapsedEffective = isMobileLayout ? activeMobilePanel !== 'prompt' : isPromptCollapsed
+  const isSidebarCollapsedMobile = isMobileLayout ? activeMobilePanel !== 'sidebar' : undefined
+  const isGenerationCollapsed = isMobileLayout && activeMobilePanel !== 'generation'
+
+  const handlePromptToggle = () => {
+    if (isMobileLayout) {
+      setActiveMobilePanel('prompt')
+      return
+    }
+    setIsPromptCollapsed((prev) => !prev)
+  }
+
+  const handleSidebarToggle = () => {
+    if (isMobileLayout) {
+      setActiveMobilePanel('sidebar')
+    }
+  }
+
+  const handleGenerationHeaderClick = () => {
+    if (isMobileLayout) {
+      setActiveMobilePanel('generation')
+    }
+  }
+
+  const handleGenerationHeaderKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (!isMobileLayout) {
+      return
+    }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      setActiveMobilePanel('generation')
+    }
+  }
+
   return (
     <main
       className="chat bg-dark images"
@@ -146,12 +195,56 @@ function Images() {
         void addFiles(files.slice(0, 3))
       }}
     >
-      <div className="chat__layout images__layout">
-        <ChatSidebar showNewChat />
-        <PromptChat />
+      <header className="images__page-header">
+        <div className="images__page-header-inner">
+          <Link className="chat__back-icon" to="/" aria-label="На главную">
+            <svg
+              className="chat__back-icon-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </Link>
+          <div className="chat__brand">
+            <span className="chat__brand-mark">BAMBUC</span>
+          </div>
+        </div>
+      </header>
 
-        <section className="chat__main">
-          <header className="chat__header">
+      <div
+        className={`chat__layout images__layout${!isMobileLayout && isPromptCollapsed ? ' images__layout--prompt-collapsed' : ''}${
+          isMobileLayout ? ` images__layout--active-${activeMobilePanel}` : ''
+        }`}
+      >
+        <ChatSidebar
+          showNewChat
+          showHeader={false}
+          isMobile={isMobileLayout}
+          isCollapsed={isSidebarCollapsedMobile}
+          onToggleCollapse={handleSidebarToggle}
+        />
+        <PromptChat
+          isCollapsed={isPromptCollapsedEffective}
+          onToggleCollapse={handlePromptToggle}
+          isMobile={isMobileLayout}
+        />
+
+        <section
+          className={`chat__main images__generation${isGenerationCollapsed ? ' images__generation--collapsed' : ''}`}
+        >
+          <header
+            className="chat__header"
+            onClick={handleGenerationHeaderClick}
+            onKeyDown={handleGenerationHeaderKeyDown}
+            role={isMobileLayout ? 'button' : undefined}
+            tabIndex={isMobileLayout ? 0 : undefined}
+          >
             <div className="chat__title">Генерация изображений</div>
           </header>
 

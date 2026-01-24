@@ -24,7 +24,13 @@ const systemPrompt =
   'Получив описание пользователя, верни улучшенный промпт для генерации. ' +
   'Отвечай одним промптом без пояснений, списков и кавычек.'
 
-function PromptChat() {
+type PromptChatProps = {
+  isCollapsed: boolean
+  onToggleCollapse: () => void
+  isMobile?: boolean
+}
+
+function PromptChat({ isCollapsed, onToggleCollapse, isMobile = false }: PromptChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)
@@ -105,10 +111,51 @@ function PromptChat() {
     void sendMessage()
   }
 
+  const handleHeaderClick = () => {
+    if (isMobile) {
+      onToggleCollapse()
+    }
+  }
+
+  const handleHeaderKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (!isMobile) {
+      return
+    }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onToggleCollapse()
+    }
+  }
+
   return (
-    <section className="chat__main images__prompt">
-      <header className="chat__header">
+    <section className={`chat__main images__prompt${isCollapsed ? ' images__prompt--collapsed' : ''}`}>
+      <header
+        className="chat__header"
+        onClick={handleHeaderClick}
+        onKeyDown={handleHeaderKeyDown}
+        role={isMobile ? 'button' : undefined}
+        tabIndex={isMobile ? 0 : undefined}
+      >
         <div className="chat__title">Улучшение промта</div>
+        <button
+          className="chat__back-icon images__prompt-toggle"
+          type="button"
+          onClick={onToggleCollapse}
+          aria-label={isCollapsed ? 'Развернуть чат улучшения промпта' : 'Свернуть чат улучшения промпта'}
+        >
+          <svg
+            className="images__prompt-toggle-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
       </header>
 
       <section className="chat__window images__prompt-window">
