@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ChatSidebar from '../Chat/ChatSidebar'
 import ImageCard from './ImageCard'
+import UploadedImagesCard from './UploadedImagesCard'
 import '../Chat/Chat.css'
 import './Images.css'
 
@@ -11,14 +12,48 @@ type GeneratedImage = {
   mimeType: string
 }
 
+type HistoryItem =
+  | { id: string; type: 'input'; images: string[] }
+  | { id: string; type: 'prompt'; text: string }
+  | { id: string; type: 'output'; image: GeneratedImage }
+
 const createId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`
 
 function Images() {
   const [prompt, setPrompt] = useState('')
-  const [images, setImages] = useState<GeneratedImage[]>([])
+  const [history, setHistory] = useState<HistoryItem[]>([])
+  const [inputImages, setInputImages] = useState<string[]>([])
   const [activeImage, setActiveImage] = useState<GeneratedImage | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
+  const [isDragActive, setIsDragActive] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const dragCounterRef = useRef(0)
+
+  const readFileAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result))
+      reader.onerror = () => reject(reader.error)
+      reader.readAsDataURL(file)
+    })
+
+  const addFiles = async (files: File[]) => {
+    if (files.length === 0) {
+      return
+    }
+    try {
+      const uploaded = await Promise.all(files.map(readFileAsDataUrl))
+      setInputImages((prev) => [...prev, ...uploaded].slice(0, 3))
+    } catch (readError) {
+      console.error('[images.upload] failed', readError)
+      setError('Не удалось загрузить изображение')
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,13 +66,20 @@ function Images() {
       return
     }
 
+    const historyEntries: HistoryItem[] = []
+    if (inputImages.length > 0) {
+      historyEntries.push({ id: createId(), type: 'input', images: [...inputImages] })
+    }
+    historyEntries.push({ id: createId(), type: 'prompt', text: trimmedPrompt })
+    setHistory((prev) => [...prev, ...historyEntries])
+    setInputImages([])
     setIsGenerating(true)
 
     try {
       const response = await fetch('/v1/images/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: trimmedPrompt })
+        body: JSON.stringify({ prompt: trimmedPrompt, images: inputImages })
       })
 
       const text = await response.text()
@@ -60,7 +102,7 @@ function Images() {
         prompt: trimmedPrompt,
         mimeType
       }
-      setImages((prev) => [...prev, nextImage])
+      setHistory((prev) => [...prev, { id: createId(), type: 'output', image: nextImage }])
     } catch (err) {
       console.error('[images.generate] failed', err)
       setError('Ошибка соединения с сервером')
@@ -70,7 +112,39 @@ function Images() {
   }
 
   return (
-    <main className="chat bg-dark images">
+    <main
+      className="chat bg-dark images"
+      onDragEnter={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        dragCounterRef.current += 1
+        if (!isDragActive) {
+          setIsDragActive(true)
+        }
+      }}
+      onDragOver={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+      }}
+      onDragLeave={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        dragCounterRef.current = Math.max(0, dragCounterRef.current - 1)
+        if (dragCounterRef.current === 0) {
+          setIsDragActive(false)
+        }
+      }}
+      onDrop={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        dragCounterRef.current = 0
+        setIsDragActive(false)
+        const files = Array.from(event.dataTransfer?.files ?? []).filter((file) =>
+          file.type.startsWith('image/'),
+        )
+        void addFiles(files.slice(0, 3))
+      }}
+    >
       <div className="chat__layout">
         <ChatSidebar showNewChat />
 
@@ -80,30 +154,59 @@ function Images() {
           </header>
 
           <section className="chat__window images__window">
-            {images.length > 0 ? (
-              <div className="images__grid">
-                {images.map((image) => (
-                  <ImageCard
-                    key={image.id}
-                    src={image.src}
-                    prompt={image.prompt}
-                    onOpen={() => setActiveImage(image)}
-                    onDownload={() => {
-                      const link = document.createElement('a')
-                      link.href = image.src
-                      link.download = `bambuc-image-${image.id}.${image.mimeType.includes('png') ? 'png' : 'jpg'}`
-                      document.body.appendChild(link)
-                      link.click()
-                      document.body.removeChild(link)
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
+            {history.length === 0 ? (
               <div className="images__placeholder">Здесь появятся результаты</div>
+            ) : (
+              <div className="images__history">
+                {history.map((item) => {
+                  if (item.type === 'input') {
+                    return (
+                      <div className="images__history-item" key={item.id}>
+                        <UploadedImagesCard images={item.images} title="Загруженные изображения" />
+                      </div>
+                    )
+                  }
+                  if (item.type === 'prompt') {
+                    return (
+                      <div className="images__history-item images__history-item--prompt" key={item.id}>
+                        <div className="images__prompt-bubble">{item.text}</div>
+                      </div>
+                    )
+                  }
+                  return (
+                    <div className="images__history-item" key={item.id}>
+                      <ImageCard
+                        src={item.image.src}
+                        prompt={item.image.prompt}
+                        onOpen={() => setActiveImage(item.image)}
+                        onDownload={() => {
+                          const link = document.createElement('a')
+                          link.href = item.image.src
+                          link.download = `bambuc-image-${item.image.id}.${item.image.mimeType.includes('png') ? 'png' : 'jpg'}`
+                          document.body.appendChild(link)
+                          link.click()
+                          document.body.removeChild(link)
+                        }}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
             )}
             {error && <div className="chat__error">{error}</div>}
           </section>
+
+          {inputImages.length > 0 && (
+            <div className="images__pending">
+              <UploadedImagesCard
+                images={inputImages}
+                title="К отправке"
+                onRemove={(index) =>
+                  setInputImages((prev) => prev.filter((_, itemIndex) => itemIndex !== index))
+                }
+              />
+            </div>
+          )}
 
           <form className="chat__composer images__composer" onSubmit={handleSubmit}>
             <textarea
@@ -114,9 +217,37 @@ function Images() {
               onChange={(event) => setPrompt(event.target.value)}
               disabled={isGenerating}
             />
-            <button className="btn btn-primary" type="submit" disabled={isGenerating}>
-              {isGenerating ? 'Генерация...' : 'Создать'}
-            </button>
+            <div className="images__actions">
+              <input
+                ref={fileInputRef}
+                className="images__upload-input"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={async (event) => {
+                  const files = Array.from(event.target.files ?? [])
+                  await addFiles(files.slice(0, 3))
+                }}
+                disabled={isGenerating}
+              />
+              <button className="images__icon-btn images__icon-btn--primary" type="submit" disabled={isGenerating} aria-label="Создать">
+                <svg className="images__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+              <button
+                className="images__icon-btn"
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isGenerating}
+                aria-label="Загрузить изображение"
+              >
+                <svg className="images__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21.44 11.05l-8.49 8.49a5 5 0 0 1-7.07-7.07l8.49-8.49a3.5 3.5 0 1 1 4.95 4.95l-8.49 8.49a2 2 0 0 1-2.83-2.83l8.49-8.49" />
+                </svg>
+              </button>
+            </div>
           </form>
         </section>
       </div>
@@ -145,6 +276,14 @@ function Images() {
               </svg>
             </button>
             <img className="images__overlay-image" src={activeImage.src} alt={activeImage.prompt} />
+          </div>
+        </div>
+      )}
+
+      {isDragActive && (
+        <div className="images__dropzone">
+          <div className="images__dropzone-card">
+            Перетащите изображения сюда
           </div>
         </div>
       )}
